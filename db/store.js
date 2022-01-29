@@ -4,6 +4,8 @@
 const fs = require("fs");
 const util = require("util");
 const path = require("path")
+const express = require("express");
+const app = express();
 
 // Creates a promise, which the program will complete before moving on. 
 const readFileAsync = util.promisify(fs.readFile);
@@ -15,13 +17,12 @@ class Store {
         this.lastId = 0;
     };
     read() {
-        return readFileAsync("db/db.json", "utf8");
+        return readFileAsync(path.join(__dirname, "db.json"), "utf8");
     };
     write(note) {
         return writeFileAsync(path.join(__dirname, "db.json"), JSON.stringify(note));
     };
     getNotes() {
-        
         return this.read().then(notes => {
             // let parsedNotes = [].concat(JSON.parse(notes));
             let parsedNotes = JSON.parse(notes);
@@ -29,19 +30,38 @@ class Store {
             return parsedNotes;
         });
     };
-    addNotes(note) {
+    addNote(newNote) {
+        //create new obj with notes param using notes.title and notes.text
         console.log(newNote);
         return this.getNotes().then(notes => {
-            console.log(newNote, notes);
+            // console.log(newNote, notes);
             const newNoteList = [...notes, newNote]; // Creates a new array with the memebers of the array notes and adds newNote to the end
             console.log(newNoteList);
             // Step 1: convert to a string
             return this.write(newNoteList);
         })
+        //this.read().then(youll get info back)
+        //this.write with old json info and new obj from frontend
     };
-    deleteNotes(id) {
-
-    };
+    deleteNotes(title) {
+        // use the filter function
+        return this.getNotes()
+            .then(notes => {
+                console.log("This note says " + title);
+                for (var i = 0; i < notes.length; i++) {
+                    if (notes[i].title === title) {
+                        // Splice takes i position, and then deletes the 1 note.
+                        notes.splice(i, 1);
+                        console.log(notes);
+                        break;
+                    }
+                }
+                this.write(notes);
+                
+            })
+    }
 };
 
-module.exports = new Store();
+const store = new Store();
+
+module.exports = store;
