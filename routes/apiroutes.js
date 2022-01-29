@@ -19,8 +19,8 @@ router.get("/notes", function (req, res) {
 
 router.post("/notes", function (req, res) {
     store
-        .addNotes(req.body)
-        .then((note) => res.json(note))
+        .addNote(req.body)
+        .then((notes) => res.json(notes))
         .catch(err => res.status(500).json(err))
 });
 

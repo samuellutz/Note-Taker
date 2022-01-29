@@ -3,6 +3,7 @@
 
 const fs = require("fs");
 const util = require("util");
+const path = require("path")
 
 // Creates a promise, which the program will complete before moving on. 
 const readFileAsync = util.promisify(fs.readFile);
@@ -17,7 +18,7 @@ class Store {
         return readFileAsync("db/db.json", "utf8");
     };
     write(note) {
-        return writeFileAsync("db/db.json", JSON.stringify(note));
+        return writeFileAsync(path.join(__dirname, "db.json"), JSON.stringify(note));
     };
     getNotes() {
         
@@ -29,7 +30,14 @@ class Store {
         });
     };
     addNotes(note) {
-
+        console.log(newNote);
+        return this.getNotes().then(notes => {
+            console.log(newNote, notes);
+            const newNoteList = [...notes, newNote]; // Creates a new array with the memebers of the array notes and adds newNote to the end
+            console.log(newNoteList);
+            // Step 1: convert to a string
+            return this.write(newNoteList);
+        })
     };
     deleteNotes(id) {
 
