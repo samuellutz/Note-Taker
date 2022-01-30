@@ -22,9 +22,7 @@ router.delete('/api/notes/:id', function (req, res) {
   
     // removes the note with matching id
     store = store.filter(note => note.id !== req.params.id);
-  
     fs.writeFile("./db/db.json", JSON.stringify(db, null, 2), (err) => err ? console.error(err) : console.log("success"));
-  
     res.send(`Got a DELETE request at /user (${req.body})`)
   });
 
