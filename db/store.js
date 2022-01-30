@@ -1,16 +1,15 @@
 // DEPENDENCIES
 
-
 const fs = require("fs");
+const path = require("path");
 const util = require("util");
-const path = require("path")
 const express = require("express");
 const app = express();
 
 // Creates a promise, which the program will complete before moving on. 
 const readFileAsync = util.promisify(fs.readFile);
 // Creates a promise, which the program will complete before moving on. 
-const writeFileAsync = util.promisify(fs.writeFile);
+const writeFileAsync = util.promisify(fs.writeFile)
 
 class Store {
     constructor() {
@@ -40,8 +39,7 @@ class Store {
             // Step 1: convert to a string
             return this.write(newNoteList);
         })
-        //this.read().then(youll get info back)
-        //this.write with old json info and new obj from frontend
+        
     };
     deleteNotes(title) {
         // use the filter function
@@ -49,10 +47,9 @@ class Store {
             .then(notes => {
                 console.log("This note says " + title);
                 for (var i = 0; i < notes.length; i++) {
-                    if (notes[i].title === title) {
-                        // Splice takes i position, and then deletes the 1 note.
-                        notes.splice(i, 1);
-                        console.log(notes);
+                        if (notes[i].title === title) {
+                            // Splice takes i position, and then deletes the 1 note.
+                            notes.splice(i, 1);
                         break;
                     }
                 }
