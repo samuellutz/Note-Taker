@@ -41,22 +41,6 @@ class Store {
         })
         
     };
-    deleteNotes(title) {
-        // use the filter function
-        return this.getNotes()
-            .then(notes => {
-                console.log("This note says " + title);
-                for (var i = 0; i < notes.length; i++) {
-                        if (notes[i].title === title) {
-                            // Splice takes i position, and then deletes the 1 note.
-                            notes.splice(i, 1);
-                        break;
-                    }
-                }
-                this.write(notes);
-                
-            })
-    }
 };
 
 const store = new Store();
